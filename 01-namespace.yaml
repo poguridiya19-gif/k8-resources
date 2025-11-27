@@ -1,0 +1,7 @@
+apiVersion: v1
+kina: Namespace
+metadata:
+  name: roboshop
+  labels:
+    environment: development
+    project: roboshop
