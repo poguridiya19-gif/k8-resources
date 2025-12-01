@@ -9,10 +9,10 @@ metadata:
 spec:
   replicas: 3
   selector:
-  # these labels are used to select pods
-  matchLabels:
-     purpose: dp-demo
-     project: roboshop
+    # these labels are used to select pods
+    matchLabels:
+      purpose: dp-demo
+      project: roboshop
   # pod definition
   template:
     metadata:
