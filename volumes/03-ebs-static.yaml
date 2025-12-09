@@ -1,30 +1,30 @@
 # Creating PV is K8 admin job
 apiVersion: v1
-kind: PersistentVOLUME
+kind: PersistentVolume
 metadata:
   name: ebs-static
 spec:
   accessModes:
   - ReadWriteOnce
-  persistentVolumeClaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 15Gi
   csi:
-    driver: ebs.aws.csi.com
+    driver: ebs.csi.aws.com
     fsType: ext4
     volumeHandle: vol-08a1628c9a820c0e0
 ---
 apiVersion: v1
-kind: persistentVolumeClaim
+kind: PersistentVolumeClaim
 metadata:
-  name: ebs-staic
+  name: ebs-static
 spec:
-  storageClass: ""  # Empty string must be explicitly set otherwise default StorageClass will be set
+  storageClassName: ""  # Empty string must be explicitly set otherwise default StorageClass will be set
   volumeName: ebs-static
   accessModes:
   - ReadWriteOnce
   resources:
-    request:
+    requests:
       storage: 15Gi
 ---
 apiVersion: v1
@@ -42,7 +42,7 @@ spec:
       mountPath: /usr/share/nginx/html
   nodeSelector:
     topology.kubernetes.io/zone: us-east-1b
-  volume:
+  volumes:
   - name: nginx-html
     persistentVolumeClaim:
       claimName: ebs-static
@@ -50,13 +50,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx--ebs-static
+  name: nginx-ebs-static
 spec:
-  type: load-balancer
+  type: loadBalancer
   selector:
     purpose: ebs-static
   ports:
   - protocol: TCP
     port: 80 #service port
     targetPort: 80 #container port
-    nodePort: 30007
+    NodePort: 30007

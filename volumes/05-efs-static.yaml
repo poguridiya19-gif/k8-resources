@@ -9,7 +9,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   storageClassName: ""
-  persistentVolumeClaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Retain
   csi:
     driver: efs.csi.aws.com
     volumeHandle: fs-08ea446237bfb47e1
@@ -21,7 +21,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: 
+  storageClassName: ""
   resources:
     requests:
        storage: 5Gi
@@ -37,8 +37,8 @@ spec:
   - name: nginx
     image: nginx
     volumeMounts:
-      name:
-      mountPath:
+      name: nginx-html
+      mountPath: /usr/share/nginx/html
   nodeSelector:
     topology.kubernetes.io/zone: us-east-1b
   volumes:

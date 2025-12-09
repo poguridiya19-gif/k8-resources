@@ -1,14 +1,13 @@
 apiVersion: v1
-kind: persistentVolumeClaim
+kind: PersistentVolumeClaim
 metadata:
   name: ebs-dynamic
 spec:
-  storageClass: ""  # Empty string must be explicitly set otherwise default StorageClass will be set
-  volumeName: ebs-dynamic
+  storageClassName: roboshop-ebs 
   accessModes:
   - ReadWriteOnce
   resources:
-    request:
+    requests:
       storage: 4Gi
 ---
 apiVersion: v1
@@ -26,7 +25,7 @@ spec:
       mountPath: /usr/share/nginx/html
   # nodeSelector:
   #   topology.kubernetes.io/zone: us-east-1b
-  volume:
+  volumes:
   - name: nginx-html
     persistentVolumeClaim:
       claimName: ebs-dynamic
@@ -34,9 +33,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx--ebs-dynamic
+  name: nginx-ebs-dynamic
 spec:
-  type: load-balancer
+  type: loadBalancer
   selector:
     purpose: ebs-dynamic
   ports:
